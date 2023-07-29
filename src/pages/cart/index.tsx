@@ -120,6 +120,14 @@ export default function CartPage() {
                 </th>
                 <td className="px-6 py-3">{totalQuantity}</td>
                 <td className="px-6 py-3">{totalPrice.toFixed(2)}</td>
+                <td className="px-6 py-3">
+                  <Link
+                    href="/cart/checkout"
+                    className="mr-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 px-5 py-2.5 text-center text-sm font-medium text-white transition hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:focus:ring-cyan-800"
+                  >
+                    Check out
+                  </Link>
+                </td>
               </tr>
             </tfoot>
           </table>
