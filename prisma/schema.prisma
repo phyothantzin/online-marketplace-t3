@@ -2,22 +2,45 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider        = "prisma-client-js"
-    previewFeatures = ["referentialIntegrity"]
+    provider = "prisma-client-js"
 }
 
 datasource db {
-    provider             = "sqlite"
-    url                  = env("DATABASE_URL")
-    referentialIntegrity = "prisma"
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
 }
 
 model Listing {
-    id          String   @id @default(cuid())
+    id          String    @id @default(cuid())
     userId      String
     name        String
     description String
     price       Float
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+    message     Message[]
+}
+
+model Message {
+    id           String  @id @default(cuid())
+    fromUser     String
+    fromUserName String
+    message      String
+    listingId    String
+    listing      Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+}
+
+enum ItemStatus {
+    Pending
+    On_the_way
+    Receive
+}
+
+model Cart {
+    id        String     @id @default(cuid())
+    userId    String
+    itemName  String
+    itemPrice Float
+    quantity  Int        @default(1)
+    status    ItemStatus @default(Pending)
 }

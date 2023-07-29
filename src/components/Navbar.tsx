@@ -8,7 +8,7 @@ function Navbar() {
     <div>
       <nav className="border-gray-200 bg-white dark:bg-gray-900">
         <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
-          <Link href="/" className="flex items-center">
+          <Link href="/" className="flex items-center sm:pl-8 lg:pl-0">
             <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">
               Online Marketplace
             </span>
@@ -45,9 +45,29 @@ function Navbar() {
                   className="block rounded bg-blue-700 py-2 pl-3 pr-4 text-white dark:text-white md:bg-transparent md:p-0 md:text-blue-700 md:dark:text-blue-500"
                   aria-current="page"
                 >
-                  Home
+                  Browse
                 </Link>
               </li>
+              {userId && (
+                <>
+                  <li>
+                    <Link
+                      href="/sell-product"
+                      className="block rounded py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
+                    >
+                      Sell A Product
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/offers"
+                      className="block rounded py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
+                    >
+                      Offers
+                    </Link>
+                  </li>
+                </>
+              )}
               <li>
                 <a
                   href="#"
@@ -63,6 +83,14 @@ function Navbar() {
                 >
                   Contact
                 </a>
+              </li>
+              <li>
+                <Link
+                  href="/cart"
+                  className="block rounded bg-blue-700 py-2 pl-3 pr-4 text-white dark:text-white md:bg-transparent md:p-0 md:text-blue-700 md:dark:text-blue-500"
+                >
+                  Cart
+                </Link>
               </li>
               {!userId && (
                 <>
