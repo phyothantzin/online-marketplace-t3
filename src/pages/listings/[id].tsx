@@ -83,7 +83,7 @@ export default function Home() {
 
           {user.isSignedIn && listingItem.userId !== user.user?.id ? (
             <form
-              className="flex flex-col gap-4"
+              className="-mt-4 mb-4 flex flex-col gap-4"
               onSubmit={handleSubmit((formData) => {
                 sendMessage
                   .mutateAsync({
@@ -105,6 +105,7 @@ export default function Home() {
                 <textarea
                   id="name"
                   className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                  rows={4}
                   {...register("message", { required: true })}
                 />
               </div>

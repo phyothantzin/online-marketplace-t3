@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { api } from "~/utils/api";
 import Loading from "./Loading";
+import { toast } from "react-toastify";
 
 function Card({ listing }: { listing: Listing }) {
   const addCart = api.listing.addCart.useMutation();
@@ -106,10 +107,14 @@ function Card({ listing }: { listing: Listing }) {
             ) : (
               <button
                 onClick={() =>
-                  addCart.mutateAsync({
-                    itemName: listing.name,
-                    itemPrice: listing.price,
-                  })
+                  addCart
+                    .mutateAsync({
+                      itemName: listing.name,
+                      itemPrice: listing.price,
+                    })
+                    .then(() =>
+                      toast.success(`${listing.name} is added to your cart`)
+                    )
                 }
                 className="ml-3 rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >

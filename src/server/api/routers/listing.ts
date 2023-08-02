@@ -107,6 +107,13 @@ export const listingRouter = createTRPCRouter({
         },
       });
     }),
+  deleteCart: protectedProcedure.mutation(async ({ ctx }) => {
+    await ctx.prisma.cart.deleteMany({
+      where: {
+        userId: ctx.auth.userId,
+      },
+    });
+  }),
   sendMessage: protectedProcedure
     .input(z.object({ message: z.string(), listingId: z.string() }))
     .mutation(async ({ ctx, input }) => {
