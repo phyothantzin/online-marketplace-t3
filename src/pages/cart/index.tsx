@@ -5,6 +5,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
+import Loading from "../Loading";
 
 function CartItemRow({ cartItem }: { cartItem: Cart }) {
   const updateItemQuantity = api.listing.updateCartItemQuantity.useMutation();
@@ -69,6 +70,7 @@ function CartItemRow({ cartItem }: { cartItem: Cart }) {
               placeholder="1"
               defaultValue={cartItem.quantity}
               required
+              disabled
             />
           </div>
           <button
@@ -79,7 +81,7 @@ function CartItemRow({ cartItem }: { cartItem: Cart }) {
                 .mutateAsync({
                   itemId: cartItem.id,
                   newQuantity:
-                    cartItem.quantity !== 99
+                    cartItem.quantity < 99
                       ? cartItem.quantity + 1
                       : cartItem.quantity,
                 })
@@ -125,7 +127,15 @@ function CartItemRow({ cartItem }: { cartItem: Cart }) {
 }
 
 export default function CartPage() {
-  const { data, error, isLoading } = api.listing.getCart.useQuery();
+  const {
+    data,
+    error,
+    isSuccess,
+    isLoading,
+    isFetched,
+    isFetching,
+    isRefetching,
+  } = api.listing.getCart.useQuery();
   const cartItems = data;
   let totalPrice = 0;
   let totalQuantity = 0;
@@ -139,6 +149,7 @@ export default function CartPage() {
       totalQuantity = totalQuantity + (cartItems[i]?.quantity || 0);
     }
 
+  if (error) router.push("/");
   return (
     <>
       <Head>
@@ -157,105 +168,66 @@ export default function CartPage() {
       <main className="flex min-h-screen flex-col bg-gray-900 px-4 py-2">
         <h1 className="my-4 text-4xl">Your Cart</h1>
 
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
-            <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
-              <tr>
-                <th scope="col" className="px-6 py-3">
-                  <span className="sr-only">Image</span>
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Product
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Qty
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Price
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {cartItems
-                ? cartItems.map((cartItem) => (
-                    <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                      <CartItemRow cartItem={cartItem} />
-                    </tr>
-                  ))
-                : ""}
-            </tbody>
-            <tfoot>
-              <tr className="font-semibold text-gray-900 dark:text-white">
-                <th scope="row" className="px-6 py-3 text-base">
-                  Total
-                </th>
-                <td className="px-6 py-3">{totalQuantity}</td>
-                <td className="px-6 py-3">{totalPrice.toFixed(2)}</td>
-                {totalQuantity !== 0 && (
-                  <td className="px-2 py-3">
-                    <button
-                      onClick={() => window.location.replace("/cart/checkout")}
-                      // href="/cart/checkout"
-                      className="hover rounded-md bg-blue-400 px-0 py-2 transition hover:bg-blue-500 md:px-6"
-                    >
-                      Check out
-                    </button>
-                  </td>
-                )}
-              </tr>
-            </tfoot>
-          </table>
-        </div>
+        {isLoading && isFetching && isRefetching ? <Loading /> : ""}
 
-        {/* <div className="relative overflow-x-auto">
-          <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
-            <thead className="bg-gray-100 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
-              <tr>
-                <th scope="col" className="rounded-l-lg px-6 py-3">
-                  Product Image
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Product name
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Qty
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Price
-                </th>
-                <th scope="col" className="rounded-r-lg px-6 py-3"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {cartItems
-                ? cartItems.map((cartItem) => (
-                    <tr className="bg-white dark:bg-gray-800">
-                      <CartItemRow cartItem={cartItem} />
-                    </tr>
-                  ))
-                : ""}
-            </tbody>
-            <tfoot>
-              <tr className="font-semibold text-gray-900 dark:text-white">
-                <th scope="row" className="px-6 py-3 text-base">
-                  Total
-                </th>
-                <td className="px-6 py-3">{totalPrice.toFixed(2)}</td>
-                <td className="px-6 py-3">
-                  <Link
-                    href="/cart/checkout"
-                    className="ml-3 rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                  >
-                    Check out
-                  </Link>
-                </td>
-              </tr>
-            </tfoot>
-          </table>
-        </div> */}
+        {isFetched && isSuccess && !isFetching && !isRefetching ? (
+          <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
+              <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                  <th scope="col" className="px-6 py-3">
+                    <span className="sr-only">Image</span>
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Product
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Qty
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Price
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {cartItems
+                  ? cartItems.map((cartItem) => (
+                      <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
+                        <CartItemRow cartItem={cartItem} />
+                      </tr>
+                    ))
+                  : ""}
+              </tbody>
+              <tfoot>
+                <tr className="font-semibold text-gray-900 dark:text-white">
+                  <th scope="row" className="px-6 py-3 text-base">
+                    Total
+                  </th>
+                  <td className="px-6 py-3">{totalQuantity}</td>
+                  <td className="px-6 py-3">{totalPrice.toFixed(2)}</td>
+                  {totalQuantity !== 0 && (
+                    <td className="px-2 py-3">
+                      <button
+                        onClick={() =>
+                          window.location.replace("/cart/checkout")
+                        }
+                        // href="/cart/checkout"
+                        className="hover rounded-md bg-blue-400 px-0 py-2 transition hover:bg-blue-500 md:px-6"
+                      >
+                        Check out
+                      </button>
+                    </td>
+                  )}
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        ) : (
+          ""
+        )}
       </main>
     </>
   );

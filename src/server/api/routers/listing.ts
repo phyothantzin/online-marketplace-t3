@@ -115,7 +115,13 @@ export const listingRouter = createTRPCRouter({
     });
   }),
   sendMessage: protectedProcedure
-    .input(z.object({ message: z.string(), listingId: z.string() }))
+    .input(
+      z.object({
+        message: z.string(),
+        listingId: z.string(),
+        forItem: z.string(),
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       const fromUser = await clerkClient.users.getUser(ctx.auth.userId);
 
@@ -126,6 +132,7 @@ export const listingRouter = createTRPCRouter({
             fromUser.username ||
             `${fromUser?.firstName} ${fromUser?.lastName}` ||
             `${fromUser?.emailAddresses}`,
+          forItem: input.forItem,
           message: input.message,
           listingId: input.listingId,
         },

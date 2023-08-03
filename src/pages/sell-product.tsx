@@ -1,4 +1,3 @@
-"use client";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -6,6 +5,7 @@ import { api } from "~/utils/api";
 import { createClient } from "@supabase/supabase-js";
 import { useState } from "react";
 import { useUser } from "@clerk/nextjs";
+import { env } from "~/env.mjs";
 
 type Inputs = {
   name: string;
@@ -15,8 +15,8 @@ type Inputs = {
 
 export default function SellProductPage() {
   const supabase: any = createClient(
-    "https://vljhhdzkmaqsnyiewqlk.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZsamhoZHprbWFxc255aWV3cWxrIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTAyODQ0MTAsImV4cCI6MjAwNTg2MDQxMH0.V0UtU0xK90CoCvWYeoq_eb0hKPnL1W1PZ6t7PWFnbxA"
+    env.NEXT_PUBLIC_SUPABASE_URL,
+    env.NEXT_PUBLIC_SUPABASE_KEY
   );
   const [image, setImage] = useState<any>();
   const user = useUser();
@@ -28,18 +28,6 @@ export default function SellProductPage() {
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-
-  // async function uploadImage() {
-  //   const { data, error } = await supabase.storage
-  //     .from("marketplace")
-  //     .upload(user.user?.id + "/" + crypto.randomUUID(), image);
-
-  //   if (data) {
-  //     router.push("/");
-  //   } else {
-  //     console.log(error);
-  //   }
-  // }
 
   const onSubmit = (formData: Inputs) => {
     createListing

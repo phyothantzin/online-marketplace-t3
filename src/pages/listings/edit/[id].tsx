@@ -7,6 +7,8 @@ import { createClient } from "@supabase/supabase-js";
 import { useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
+import { env } from "~/env.mjs";
+import Loading from "~/pages/Loading";
 
 type Inputs = {
   name: string;
@@ -26,8 +28,8 @@ export default function Home() {
   const listingItem = listing.data;
 
   const supabase: any = createClient(
-    "https://vljhhdzkmaqsnyiewqlk.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZsamhoZHprbWFxc255aWV3cWxrIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTAyODQ0MTAsImV4cCI6MjAwNTg2MDQxMH0.V0UtU0xK90CoCvWYeoq_eb0hKPnL1W1PZ6t7PWFnbxA"
+    env.NEXT_PUBLIC_SUPABASE_URL,
+    env.NEXT_PUBLIC_SUPABASE_KEY
   );
   const [image, setImage] = useState<any>({});
   const user = useUser();
@@ -78,108 +80,114 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center bg-gray-900">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4">
-          <h1 className="text-3xl">Sell A Product</h1>
-          <form className=" w-80 text-black" onSubmit={handleSubmit(onSubmit)}>
-            <div className="mb-6">
-              <label
-                className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                htmlFor="file_input"
-              >
-                Upload file
-              </label>
-              <input
-                className="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
-                id="file_input"
-                type="file"
-                accept="image/png, image/jpeg"
-                onChange={(e) => {
-                  if (!e.target.files) return;
-                  else setImage(e.target?.files[0]);
-                }}
-              />
-            </div>
-            <Link href="#">
-              <img
-                className="w-96 rounded-t-lg"
-                src={`https://vljhhdzkmaqsnyiewqlk.supabase.co/storage/v1/object/public/marketplace/${listingItem?.name.replaceAll(
-                  " ",
-                  "-"
-                )}?${Date.now()}`}
-                alt=""
-              />
-            </Link>
-            <div className="mb-6">
-              <label
-                htmlFor="name"
-                className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Name
-                {errors.name && (
-                  <span className="mb-1 ml-2 text-red-500">
-                    * This field is required
-                  </span>
-                )}
-              </label>
-              <input
-                type="text"
-                id="name"
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                defaultValue={listingItem?.name}
-                {...register("name", { required: true })}
-              />
-            </div>
-
-            <div className="mb-6">
-              <label
-                htmlFor="description"
-                className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Description
-                {errors.description && (
-                  <span className="mb-1 ml-2 text-red-500">
-                    * This field is required
-                  </span>
-                )}
-              </label>
-              <textarea
-                id="description"
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                defaultValue={listingItem?.description}
-                {...register("description", { required: true })}
-              />
-            </div>
-
-            <div className="mb-6">
-              <label
-                htmlFor="price"
-                className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Price
-                {errors.price && (
-                  <span className="mb-1 ml-2 text-red-500">
-                    * This field is required
-                  </span>
-                )}
-              </label>
-              <input
-                type="number"
-                step="0.01"
-                id="price"
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                defaultValue={listingItem?.price}
-                {...register("price", { required: true })}
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 sm:w-auto"
+        {listing.isLoading && <Loading />}
+        {listing.isFetched && (
+          <div className="container flex flex-col items-center justify-center gap-12 px-4">
+            <h1 className="text-3xl">Sell A Product</h1>
+            <form
+              className=" w-80 text-black"
+              onSubmit={handleSubmit(onSubmit)}
             >
-              Update
-            </button>
-          </form>
-        </div>
+              <div className="mb-6">
+                <label
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  htmlFor="file_input"
+                >
+                  Upload file
+                </label>
+                <input
+                  className="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400"
+                  id="file_input"
+                  type="file"
+                  accept="image/png, image/jpeg"
+                  onChange={(e) => {
+                    if (!e.target.files) return;
+                    else setImage(e.target?.files[0]);
+                  }}
+                />
+              </div>
+              <Link href="#">
+                <img
+                  className="w-96 rounded-t-lg"
+                  src={`https://vljhhdzkmaqsnyiewqlk.supabase.co/storage/v1/object/public/marketplace/${listingItem?.name.replaceAll(
+                    " ",
+                    "-"
+                  )}?${Date.now()}`}
+                  alt=""
+                />
+              </Link>
+              <div className="mb-6">
+                <label
+                  htmlFor="name"
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Name
+                  {errors.name && (
+                    <span className="mb-1 ml-2 text-red-500">
+                      * This field is required
+                    </span>
+                  )}
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                  defaultValue={listingItem?.name}
+                  {...register("name", { required: true })}
+                />
+              </div>
+
+              <div className="mb-6">
+                <label
+                  htmlFor="description"
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Description
+                  {errors.description && (
+                    <span className="mb-1 ml-2 text-red-500">
+                      * This field is required
+                    </span>
+                  )}
+                </label>
+                <textarea
+                  id="description"
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                  defaultValue={listingItem?.description}
+                  {...register("description", { required: true })}
+                />
+              </div>
+
+              <div className="mb-6">
+                <label
+                  htmlFor="price"
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Price
+                  {errors.price && (
+                    <span className="mb-1 ml-2 text-red-500">
+                      * This field is required
+                    </span>
+                  )}
+                </label>
+                <input
+                  type="number"
+                  step="0.01"
+                  id="price"
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                  defaultValue={listingItem?.price}
+                  {...register("price", { required: true })}
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 sm:w-auto"
+              >
+                Update
+              </button>
+            </form>
+          </div>
+        )}
       </main>
     </>
   );
