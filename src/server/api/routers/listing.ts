@@ -131,7 +131,7 @@ export const listingRouter = createTRPCRouter({
           fromUserName:
             fromUser.username ??
             `${fromUser?.firstName} ${fromUser?.lastName}` ??
-            `${fromUser?.emailAddresses}`,
+            fromUser?.emailAddresses,
           forItem: input.forItem,
           message: input.message,
           listingId: input.listingId,
@@ -139,7 +139,7 @@ export const listingRouter = createTRPCRouter({
       });
       return message;
     }),
-  getMessage: protectedProcedure.query(async ({ ctx, input }) => {
+  getMessage: protectedProcedure.query(async ({ ctx }) => {
     const messageListings = await ctx.prisma.listing.findMany({
       where: { userId: ctx.auth.userId },
       include: {
