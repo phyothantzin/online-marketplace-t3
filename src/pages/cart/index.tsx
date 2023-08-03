@@ -145,8 +145,8 @@ export default function CartPage() {
     for (let i = 0; i < cartItems?.length; i++) {
       totalPrice =
         totalPrice +
-        (cartItems[i]?.itemPrice || 0) * (cartItems[i]?.quantity || 0);
-      totalQuantity = totalQuantity + (cartItems[i]?.quantity || 0);
+        (cartItems[i]?.itemPrice ?? 0) * (cartItems[i]?.quantity ?? 0);
+      totalQuantity = totalQuantity + (cartItems[i]?.quantity ?? 0);
     }
 
   if (error) router.push("/");

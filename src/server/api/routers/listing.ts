@@ -129,8 +129,8 @@ export const listingRouter = createTRPCRouter({
         data: {
           fromUser: ctx.auth.userId,
           fromUserName:
-            fromUser.username ||
-            `${fromUser?.firstName} ${fromUser?.lastName}` ||
+            fromUser.username ??
+            `${fromUser?.firstName} ${fromUser?.lastName}` ??
             `${fromUser?.emailAddresses}`,
           forItem: input.forItem,
           message: input.message,

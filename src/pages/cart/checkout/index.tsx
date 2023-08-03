@@ -70,8 +70,8 @@ export default function CheckoutPage() {
     for (let i = 0; i < orderItems?.length; i++) {
       totalPrice =
         totalPrice +
-        (orderItems[i]?.itemPrice || 0) * (orderItems[i]?.quantity || 0);
-      totalQuantity = totalQuantity + (orderItems[i]?.quantity || 0);
+        (orderItems[i]?.itemPrice ?? 0) * (orderItems[i]?.quantity ?? 0);
+      totalQuantity = totalQuantity + (orderItems[i]?.quantity ?? 0);
     }
 
   return (
