@@ -78,26 +78,26 @@ function Navbar() {
               )}
               <li>
                 <a
-                  href="#"
+                  href="/about"
                   className="block rounded py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
                 >
                   About
                 </a>
               </li>
-              <li>
+              {/* <li>
                 <a
                   href="#"
                   className="block rounded py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
                 >
                   Contact
                 </a>
-              </li>
+              </li> */}
 
-              {!userId && (
+              {/* {!userId && (
                 <>
                   <SignInButton />
                 </>
-              )}
+              )} */}
               {/* {!userId && (
                 <>
                   <li>

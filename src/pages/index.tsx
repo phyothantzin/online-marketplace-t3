@@ -1,11 +1,12 @@
 "use client";
-import { useAuth } from "@clerk/nextjs";
+import { SignIn, useAuth } from "@clerk/nextjs";
 import type { Listing } from "@prisma/client";
 import Head from "next/head";
 import Link from "next/link";
 import { api } from "~/utils/api";
 import Loading from "./Loading";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 function Card({ listing }: { listing: Listing }) {
   const addCart = api.listing.addCart.useMutation();
@@ -132,6 +133,8 @@ function Card({ listing }: { listing: Listing }) {
 }
 
 export default function Home() {
+  const { userId } = useAuth();
+
   const listings = api.listing.all.useQuery();
 
   return (
@@ -150,16 +153,27 @@ export default function Home() {
         ></script>
       </Head>
       <main className="flex min-h-screen flex-col bg-gray-900 px-12 py-2">
-        <h1 className="my-4 text-4xl">Items for Sale</h1>
+        {userId && <h1 className="my-4 text-4xl">Items for Sale</h1>}
 
-        {listings.isLoading && <Loading />}
+        {!userId && (
+          <div className="container flex items-center justify-center gap-4 md:grid-cols-2 md:justify-start lg:grid-cols-3 lg:justify-center">
+            <SignIn />
+          </div>
+        )}
 
-        {listings.isFetched && (
+        {userId && listings.isLoading && <Loading />}
+
+        {userId &&
+        listings.isFetched &&
+        !listings.isFetching &&
+        !listings.isLoading ? (
           <div className="container grid grid-cols-1 items-center justify-start gap-4 md:grid-cols-2 md:justify-start lg:grid-cols-3 lg:justify-center">
             {listings?.data?.map((listing) => (
               <Card key={listing.id} listing={listing} />
             ))}
           </div>
+        ) : (
+          ""
         )}
       </main>
     </>
