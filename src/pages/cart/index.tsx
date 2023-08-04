@@ -3,7 +3,6 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 import Loading from "../Loading";
-import Image from "next/image";
 
 function CartItemRow({ cartItem }: { cartItem: Cart }) {
   const updateItemQuantity = api.listing.updateCartItemQuantity.useMutation();
@@ -12,7 +11,7 @@ function CartItemRow({ cartItem }: { cartItem: Cart }) {
   return (
     <>
       <td className="w-80 md:p-4">
-        <Image
+        <img
           className="pl-2"
           src={`https://vljhhdzkmaqsnyiewqlk.supabase.co/storage/v1/object/public/marketplace/${cartItem?.itemName.replaceAll(
             " ",

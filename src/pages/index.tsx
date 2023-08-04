@@ -6,7 +6,6 @@ import Link from "next/link";
 import { api } from "~/utils/api";
 import Loading from "./Loading";
 import { toast } from "react-toastify";
-import Image from "next/image";
 
 function Card({ listing }: { listing: Listing }) {
   const addCart = api.listing.addCart.useMutation();
@@ -16,7 +15,7 @@ function Card({ listing }: { listing: Listing }) {
     <>
       <div className="w-full max-w-sm rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800">
         <Link href={`listings/${listing.id}`}>
-          <Image
+          <img
             className="h-60 w-full rounded-t-lg pb-3"
             src={`https://vljhhdzkmaqsnyiewqlk.supabase.co/storage/v1/object/public/marketplace/${listing?.name.replaceAll(
               " ",

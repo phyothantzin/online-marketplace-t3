@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";
 import Loading from "../Loading";
-import Image from "next/image";
 
 export default function Home() {
   const router = useRouter();
@@ -72,7 +71,7 @@ export default function Home() {
               )}
             </div>
             <Link href="#">
-              <Image
+              <img
                 className="w-96 rounded-t-lg"
                 src={`https://vljhhdzkmaqsnyiewqlk.supabase.co/storage/v1/object/public/marketplace/${listingItem?.name.replaceAll(
                   " ",
