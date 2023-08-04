@@ -1,12 +1,13 @@
-import { Cart } from "@prisma/client";
+import type { Cart } from "@prisma/client";
 import Head from "next/head";
+import Image from "next/image";
 import Link from "next/link";
 import { api } from "~/utils/api";
 
 function OrderItem({ orderItem }: { orderItem: Cart }) {
   return (
     <div className="flex flex-col rounded-lg bg-slate-800 sm:flex-row">
-      <img
+      <Image
         className="m-2 h-24 w-28 rounded-md border object-cover object-center"
         src={`https://vljhhdzkmaqsnyiewqlk.supabase.co/storage/v1/object/public/marketplace/${orderItem?.itemName.replaceAll(
           " ",
@@ -23,7 +24,7 @@ function OrderItem({ orderItem }: { orderItem: Cart }) {
   );
 }
 
-function PaymentMethod({ methodName }: { methodName: String }) {
+function PaymentMethod({ methodName }: { methodName: string }) {
   return (
     <div className="relative">
       <input
@@ -38,13 +39,13 @@ function PaymentMethod({ methodName }: { methodName: String }) {
         className="flex cursor-pointer select-none rounded-lg border border-gray-300 p-4 peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-slate-950"
         htmlFor="radio_1"
       >
-        <img
+        <Image
           className="w-14 object-contain"
           src="https://vljhhdzkmaqsnyiewqlk.supabase.co/storage/v1/object/public/marketplace/fedex.png"
           alt=""
         />
         <div className="ml-5">
-          <span className="mt-2 font-semibold">Fedex Delivery</span>
+          <span className="mt-2 font-semibold">{methodName}</span>
           <p className="text-sm leading-6 text-slate-500">Delivery: 2-4 Days</p>
         </div>
       </label>
@@ -116,15 +117,16 @@ export default function CheckoutPage() {
                 Check your items. And select a suitable shipping method.
               </p>
               <div className="mt-8 space-y-3 rounded-lg border bg-transparent px-2 py-4 sm:px-6">
-                {orderItems &&
-                  orderItems.map((orderItem) => (
-                    <OrderItem orderItem={orderItem} />
-                  ))}
+                {orderItems
+                  ? orderItems.map((orderItem) => (
+                      <OrderItem key={orderItem.id} orderItem={orderItem} />
+                    ))
+                  : ""}
               </div>
 
               <p className="mt-8 text-lg font-medium">Shipping Methods</p>
               <form className="mb-6 mt-5 grid gap-6">
-                <PaymentMethod methodName="Cash on delivery" />
+                <PaymentMethod methodName="Fedex Delivery" />
                 <div className="relative">
                   <input
                     className="peer hidden"
@@ -138,7 +140,7 @@ export default function CheckoutPage() {
                     className="flex cursor-pointer select-none rounded-lg border border-gray-300 p-4 peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-slate-950"
                     htmlFor="radio_2"
                   >
-                    <img
+                    <Image
                       className="w-14 object-contain"
                       src="https://vljhhdzkmaqsnyiewqlk.supabase.co/storage/v1/object/public/marketplace/dhl.png"
                       alt=""

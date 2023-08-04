@@ -1,11 +1,12 @@
 "use client";
 import { useAuth } from "@clerk/nextjs";
-import { Listing } from "@prisma/client";
+import type { Listing } from "@prisma/client";
 import Head from "next/head";
 import Link from "next/link";
 import { api } from "~/utils/api";
 import Loading from "./Loading";
 import { toast } from "react-toastify";
+import Image from "next/image";
 
 function Card({ listing }: { listing: Listing }) {
   const addCart = api.listing.addCart.useMutation();
@@ -15,12 +16,13 @@ function Card({ listing }: { listing: Listing }) {
     <>
       <div className="w-full max-w-sm rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800">
         <Link href={`listings/${listing.id}`}>
-          <img
+          <Image
             className="h-60 w-full rounded-t-lg pb-3"
             src={`https://vljhhdzkmaqsnyiewqlk.supabase.co/storage/v1/object/public/marketplace/${listing?.name.replaceAll(
               " ",
               "-"
             )}?${Date.now()}`}
+            alt={listing.name}
           />
         </Link>
         <div className="mt-3 px-5 pb-8">
@@ -92,10 +94,12 @@ function Card({ listing }: { listing: Listing }) {
             {listing.userId == userId ? (
               <button
                 onClick={() =>
-                  addCart.mutateAsync({
-                    itemName: listing.name,
-                    itemPrice: listing.price,
-                  })
+                  addCart
+                    .mutateAsync({
+                      itemName: listing.name,
+                      itemPrice: listing.price,
+                    })
+                    .catch((error) => console.error(error))
                 }
                 disabled
                 className="ml-3 rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -110,6 +114,7 @@ function Card({ listing }: { listing: Listing }) {
                       itemName: listing.name,
                       itemPrice: listing.price,
                     })
+                    .catch((error) => console.error(error))
                     .then(() =>
                       toast.success(`${listing.name} is added to your cart`)
                     )

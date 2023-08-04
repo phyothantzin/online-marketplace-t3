@@ -1,10 +1,9 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";
 import { createClient } from "@supabase/supabase-js";
 import { useState } from "react";
-import { useUser } from "@clerk/nextjs";
 import { env } from "~/env.mjs";
 
 type Inputs = {
@@ -19,7 +18,6 @@ export default function SellProductPage() {
     env.NEXT_PUBLIC_SUPABASE_KEY
   );
   const [image, setImage] = useState<any>();
-  const user = useUser();
   const createListing = api.listing.create.useMutation();
   const router = useRouter();
 
@@ -35,6 +33,7 @@ export default function SellProductPage() {
         ...formData,
         price: parseFloat(formData.price),
       })
+      .catch((error) => console.error(error))
       .then(() =>
         supabase.storage
           .from("marketplace")

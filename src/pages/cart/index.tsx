@@ -1,8 +1,9 @@
-import { Cart } from "@prisma/client";
+import type { Cart } from "@prisma/client";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 import Loading from "../Loading";
+import Image from "next/image";
 
 function CartItemRow({ cartItem }: { cartItem: Cart }) {
   const updateItemQuantity = api.listing.updateCartItemQuantity.useMutation();
@@ -11,7 +12,7 @@ function CartItemRow({ cartItem }: { cartItem: Cart }) {
   return (
     <>
       <td className="w-80 md:p-4">
-        <img
+        <Image
           className="pl-2"
           src={`https://vljhhdzkmaqsnyiewqlk.supabase.co/storage/v1/object/public/marketplace/${cartItem?.itemName.replaceAll(
             " ",
@@ -37,6 +38,7 @@ function CartItemRow({ cartItem }: { cartItem: Cart }) {
                       ? cartItem.quantity - 1
                       : cartItem.quantity,
                 })
+                .catch((error) => console.error(error))
                 .then(() => window.location.reload());
             }}
           >
@@ -80,6 +82,7 @@ function CartItemRow({ cartItem }: { cartItem: Cart }) {
                       ? cartItem.quantity + 1
                       : cartItem.quantity,
                 })
+                .catch((error) => console.error(error))
                 .then(() => window.location.reload());
             }}
           >
@@ -110,6 +113,7 @@ function CartItemRow({ cartItem }: { cartItem: Cart }) {
           onClick={() =>
             removeCartItem
               .mutateAsync({ itemId: cartItem.id })
+              .catch((error) => console.error(error))
               .then(() => window.location.reload())
           }
           className="font-medium text-red-600 hover:underline dark:text-red-500"
@@ -190,7 +194,10 @@ export default function CartPage() {
               <tbody>
                 {cartItems
                   ? cartItems.map((cartItem) => (
-                      <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
+                      <tr
+                        key={cartItem.id}
+                        className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
+                      >
                         <CartItemRow cartItem={cartItem} />
                       </tr>
                     ))

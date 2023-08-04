@@ -1,14 +1,14 @@
 "use client";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";
 import { createClient } from "@supabase/supabase-js";
 import { useState } from "react";
-import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { env } from "~/env.mjs";
 import Loading from "~/pages/Loading";
+import Image from "next/image";
 
 type Inputs = {
   name: string;
@@ -32,13 +32,11 @@ export default function Home() {
     env.NEXT_PUBLIC_SUPABASE_KEY
   );
   const [image, setImage] = useState<any>({});
-  const user = useUser();
   const updateListing = api.listing.update.useMutation();
 
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<Inputs>();
 
@@ -70,6 +68,7 @@ export default function Home() {
         price: parseFloat(formData.price),
         listingId: router.query.id as string,
       })
+      .catch((error) => console.error(error))
       .then(() => router.push("/"));
   };
   return (
@@ -107,7 +106,7 @@ export default function Home() {
                 />
               </div>
               <Link href="#">
-                <img
+                <Image
                   className="w-96 rounded-t-lg"
                   src={`https://vljhhdzkmaqsnyiewqlk.supabase.co/storage/v1/object/public/marketplace/${listingItem?.name.replaceAll(
                     " ",

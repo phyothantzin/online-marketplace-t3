@@ -1,11 +1,11 @@
 import { useUser } from "@clerk/nextjs";
-import { Listing } from "@prisma/client";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";
 import Loading from "../Loading";
+import Image from "next/image";
 
 export default function Home() {
   const router = useRouter();
@@ -72,13 +72,13 @@ export default function Home() {
               )}
             </div>
             <Link href="#">
-              <img
+              <Image
                 className="w-96 rounded-t-lg"
                 src={`https://vljhhdzkmaqsnyiewqlk.supabase.co/storage/v1/object/public/marketplace/${listingItem?.name.replaceAll(
                   " ",
                   "-"
                 )}?${Date.now()}`}
-                alt=""
+                alt={listingItem.name}
               />
             </Link>
             <p>{listingItem.description}</p>
