@@ -3,8 +3,6 @@ import { useAuth } from "@clerk/nextjs";
 import { Listing } from "@prisma/client";
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { useState } from "react";
 import { api } from "~/utils/api";
 import Loading from "./Loading";
 import { toast } from "react-toastify";

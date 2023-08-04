@@ -2,7 +2,6 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { api } from "~/utils/api";
 import Loading from "./Loading";
-import { Message } from "@prisma/client";
 
 const Home: NextPage = () => {
   const { data, isLoading, isFetched } = api.listing.getMessage.useQuery();

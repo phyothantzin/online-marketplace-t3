@@ -1,8 +1,5 @@
-"use client";
 import { Cart } from "@prisma/client";
-import { router } from "@trpc/server";
 import Head from "next/head";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 import Loading from "../Loading";
@@ -10,8 +7,6 @@ import Loading from "../Loading";
 function CartItemRow({ cartItem }: { cartItem: Cart }) {
   const updateItemQuantity = api.listing.updateCartItemQuantity.useMutation();
   const removeCartItem = api.listing.removeCartItem.useMutation();
-
-  const router = useRouter();
 
   return (
     <>

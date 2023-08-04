@@ -1,11 +1,7 @@
-"use client";
 import { Cart } from "@prisma/client";
 import Head from "next/head";
 import Link from "next/link";
 import { api } from "~/utils/api";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import { toast } from "react-toastify";
 
 function OrderItem({ orderItem }: { orderItem: Cart }) {
   return (
@@ -64,7 +60,6 @@ export default function CheckoutPage() {
   const orderItems = data;
   let totalPrice = 0;
   let totalQuantity = 0;
-  const router = useRouter();
 
   if (orderItems !== undefined)
     for (let i = 0; i < orderItems?.length; i++) {
