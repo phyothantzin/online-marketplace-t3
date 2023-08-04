@@ -8,7 +8,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { env } from "~/env.mjs";
 import Loading from "~/pages/Loading";
-import Image from "next/image";
 
 type Inputs = {
   name: string;
@@ -106,7 +105,7 @@ export default function Home() {
                 />
               </div>
               <Link href="#">
-                <Image
+                <img
                   className="w-96 rounded-t-lg"
                   src={`https://vljhhdzkmaqsnyiewqlk.supabase.co/storage/v1/object/public/marketplace/${listingItem?.name.replaceAll(
                     " ",

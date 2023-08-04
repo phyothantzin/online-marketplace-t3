@@ -1,13 +1,12 @@
 import type { Cart } from "@prisma/client";
 import Head from "next/head";
-import Image from "next/image";
 import Link from "next/link";
 import { api } from "~/utils/api";
 
 function OrderItem({ orderItem }: { orderItem: Cart }) {
   return (
     <div className="flex flex-col rounded-lg bg-slate-800 sm:flex-row">
-      <Image
+      <img
         className="m-2 h-24 w-28 rounded-md border object-cover object-center"
         src={`https://vljhhdzkmaqsnyiewqlk.supabase.co/storage/v1/object/public/marketplace/${orderItem?.itemName.replaceAll(
           " ",
@@ -39,7 +38,7 @@ function PaymentMethod({ methodName }: { methodName: string }) {
         className="flex cursor-pointer select-none rounded-lg border border-gray-300 p-4 peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-slate-950"
         htmlFor="radio_1"
       >
-        <Image
+        <img
           className="w-14 object-contain"
           src="https://vljhhdzkmaqsnyiewqlk.supabase.co/storage/v1/object/public/marketplace/fedex.png"
           alt=""
@@ -140,7 +139,7 @@ export default function CheckoutPage() {
                     className="flex cursor-pointer select-none rounded-lg border border-gray-300 p-4 peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-slate-950"
                     htmlFor="radio_2"
                   >
-                    <Image
+                    <img
                       className="w-14 object-contain"
                       src="https://vljhhdzkmaqsnyiewqlk.supabase.co/storage/v1/object/public/marketplace/dhl.png"
                       alt=""
