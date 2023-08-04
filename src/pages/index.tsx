@@ -94,7 +94,7 @@ function Card({ listing }: { listing: Listing }) {
             {listing.userId == userId ? (
               <button
                 onClick={() =>
-                  addCart
+                  void addCart
                     .mutateAsync({
                       itemName: listing.name,
                       itemPrice: listing.price,
