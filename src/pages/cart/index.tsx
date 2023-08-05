@@ -195,7 +195,7 @@ export default function CartPage() {
                   ? cartItems.map((cartItem) => (
                       <tr
                         key={cartItem.id}
-                        className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
+                        className="border-b bg-white opacity-90 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
                       >
                         <CartItemRow cartItem={cartItem} />
                       </tr>
@@ -203,12 +203,10 @@ export default function CartPage() {
                   : ""}
               </tbody>
               <tfoot>
-                <tr className="font-semibold text-gray-900 dark:text-white">
+                <tr className="font-semibold text-gray-50 dark:text-white">
                   <th scope="row" className="px-6 py-3 text-base">
                     Total
                   </th>
-                  <td className="px-6 py-3">{totalQuantity}</td>
-                  <td className="px-6 py-3">{totalPrice.toFixed(2)}</td>
                   {totalQuantity !== 0 && (
                     <td className="px-2 py-3">
                       <button
@@ -222,6 +220,8 @@ export default function CartPage() {
                       </button>
                     </td>
                   )}
+                  <td className="">{totalQuantity}</td>
+                  <td className="">{totalPrice.toFixed(2)}</td>
                 </tr>
               </tfoot>
             </table>

@@ -14,7 +14,7 @@ function Card({ listing }: { listing: Listing }) {
 
   return (
     <>
-      <div className="w-full max-w-sm rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800">
+      <div className="w-full max-w-sm rounded-lg border border-gray-200 bg-gray-50 shadow dark:border-gray-700 dark:bg-gray-800">
         <Link href={`listings/${listing.id}`}>
           <img
             className="h-60 w-full rounded-t-lg pb-3"
@@ -78,7 +78,7 @@ function Card({ listing }: { listing: Listing }) {
               <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
             </svg>
             <span className="ml-3 mr-2 rounded bg-blue-100 px-2.5 py-0.5 text-xs font-semibold text-blue-800 dark:bg-blue-200 dark:text-blue-800">
-              5.0
+              4.0
             </span>
           </div>
           <div className="flex items-center justify-between">

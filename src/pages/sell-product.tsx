@@ -54,7 +54,7 @@ export default function SellProductPage() {
           <form className=" w-80 text-black" onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-6">
               <label
-                className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                className="mb-2 block text-sm font-medium text-gray-50 dark:text-white"
                 htmlFor="file_input"
               >
                 Upload file
@@ -73,7 +73,7 @@ export default function SellProductPage() {
             <div className="mb-6">
               <label
                 htmlFor="name"
-                className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                className="mb-2 block text-sm font-medium text-gray-50 dark:text-white"
               >
                 Name
                 {errors.name && (
@@ -93,7 +93,7 @@ export default function SellProductPage() {
             <div className="mb-6">
               <label
                 htmlFor="description"
-                className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                className="mb-2 block text-sm font-medium text-gray-50 dark:text-white"
               >
                 Description
                 {errors.description && (
@@ -112,7 +112,7 @@ export default function SellProductPage() {
             <div className="mb-6">
               <label
                 htmlFor="price"
-                className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                className="mb-2 block text-sm font-medium text-gray-50 dark:text-white"
               >
                 Price
                 {errors.price && (

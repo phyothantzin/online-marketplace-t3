@@ -39,7 +39,7 @@ const Home: NextPage = () => {
                   {messages?.map((message) => (
                     <tr
                       key={message.id}
-                      className="border-b bg-white dark:border-gray-700 dark:bg-gray-800"
+                      className="border-b bg-gray-100 text-teal-950 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-50"
                     >
                       <td className="px-6 py-4">{message.fromUserName}</td>
                       <td className="px-6 py-4">{message.message}</td>
